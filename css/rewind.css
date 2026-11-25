@@ -158,3 +158,19 @@
 
 /* the Nextcloud content area does not scroll by itself */
 .rw-scroll { height: 100%; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+
+/* readability on top of Nextcloud wallpapers: everything outside the dark panels sits on a solid surface */
+.rw-root .rw-preview { color: var(--rw-ink); }
+.rw-root .rw-preview p { margin: 0; font-size: 1.02rem; color: var(--rw-ink); }
+.rw-root .rw-section, .rw-root .rw-foot {
+  padding: 18px 20px; border-radius: 22px; color: var(--color-main-text);
+  background: var(--color-main-background); border: 1px solid var(--color-border);
+  box-shadow: 0 10px 34px -16px rgba(0, 0, 0, .45); }
+.rw-root .rw-section > h3 { color: var(--color-main-text); }
+.rw-root .rw-feed li, .rw-root .rw-hcard { background: var(--color-background-hover, var(--color-main-background)); }
+.rw-root .rw-empty { color: var(--color-main-text); opacity: .8; padding: 18px; }
+.rw-root .rw-foot { margin-top: 22px; padding: 14px 20px; color: var(--color-main-text); opacity: 1; font-size: .9rem; line-height: 1.5; }
+.rw-root .rw-feed .rw-path, .rw-root .rw-feed .rw-when { color: var(--color-text-maxcontrast); }
+.rw-root .rw-hint { background: rgba(0, 0, 0, .28); border-radius: 10px; padding: 8px 12px; color: var(--rw-ink); }
+.rw-root .rw-machine, .rw-root .rw-hero { box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 255, 255, .06); }
+@media (max-width: 640px) { .rw-root .rw-section, .rw-root .rw-foot { padding: 14px; border-radius: 18px; } }

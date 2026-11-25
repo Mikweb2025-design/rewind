@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+* Readability on Nextcloud wallpapers: activity, recent rewinds and footer now sit on solid cards; preview/hint text uses the light ink of the dark panels. Checked on light and dark backgrounds.
+
 ## 0.1.2
 
 * Screenshots in the repository and in the App Store listing (`bin/make-screenshots.sh` renders them from the real interface).

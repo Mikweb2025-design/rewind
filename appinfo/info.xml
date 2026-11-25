@@ -11,7 +11,7 @@
 
 Rewind restores what Nextcloud keeps (file versions and the trash bin) and is **not** a replacement for backups.
 Requires the core apps "Versions" and "Deleted files".]]></description>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <licence>agpl</licence>
     <author>Rewind contributors</author>
     <namespace>Rewind</namespace>
