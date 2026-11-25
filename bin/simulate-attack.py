@@ -10,6 +10,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--files', type=int, default=60)
 ap.add_argument('--mode', default='client')
 ap.add_argument('--user', default='alice')
+ap.add_argument('--no-rewind', action='store_true', help='stop after the attack (to try the rewind in the web interface)')
 a = ap.parse_args()
 c = Client(a.user, os.environ.get('NC_PASS', 'alice-test-pw-123'))
 CONTAINER = os.environ.get('NC_CONTAINER', 'nc-rewind')
@@ -82,6 +83,9 @@ if a.mode == 'observe':
     sys.exit(0)
 assert blocked_at is not None and inc is not None, 'attack was not detected'
 
+if a.no_rewind:
+    print('attack done, incident left open: open the Rewind page and press "Go back to before the attack"')
+    sys.exit(0)
 st, r = c.api('POST', '/api/rewind', {'folder': '/' + FOLDER, 'ts': inc['started'] - 1, 'incident': inc['id']})
 print('rewind', st, {k: r[k] for k in ('status', 'done', 'counts')} if st == 200 else r)
 after = c.tree(FOLDER)

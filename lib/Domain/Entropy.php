@@ -13,11 +13,11 @@ final class Entropy {
 	private const MAGIC = [
 		'jpg' => ["\xFF\xD8\xFF"], 'jpeg' => ["\xFF\xD8\xFF"], 'png' => ["\x89PNG"], 'gif' => ['GIF8'],
 		'pdf' => ['%PDF'], 'zip' => ["PK\x03\x04", "PK\x05\x06"], 'docx' => ["PK\x03\x04"], 'xlsx' => ["PK\x03\x04"], 'pptx' => ["PK\x03\x04"],
-		'odt' => ["PK\x03\x04"], 'ods' => ["PK\x03\x04"], 'odp' => ["PK\x03\x04"], 'gz' => ["\x1F\x8B"], '7z' => ["7z\xBC\xAF"],
+		'odt' => ["PK\x03\x04"], 'ods' => ["PK\x03\x04"], 'odp' => ["PK\x03\x04"], 'odg' => ["PK\x03\x04"], 'odf' => ["PK\x03\x04"], 'epub' => ["PK\x03\x04"], 'jar' => ["PK\x03\x04"], 'apk' => ["PK\x03\x04"], 'gz' => ["\x1F\x8B"], '7z' => ["7z\xBC\xAF"],
 		'mp4' => ['ftyp'], 'mov' => ['ftyp', 'moov', 'wide', 'mdat'], 'mp3' => ['ID3', "\xFF\xFB", "\xFF\xF3", "\xFF\xF2"], 'heic' => ['ftyp'],
 	];
 	/** plain content: encrypted data stands out through entropy */
-	private const PLAIN = ['txt', 'md', 'csv', 'json', 'xml', 'html', 'htm', 'php', 'js', 'css', 'py', 'java', 'c', 'cpp', 'h', 'sql', 'log', 'ini', 'yml', 'yaml', 'rtf', 'ics', 'vcf', 'svg', 'bmp', 'tif', 'tiff', 'wav', 'odg'];
+	private const PLAIN = ['txt', 'md', 'csv', 'json', 'xml', 'html', 'htm', 'php', 'js', 'css', 'py', 'java', 'c', 'cpp', 'h', 'sql', 'log', 'ini', 'yml', 'yaml', 'rtf', 'ics', 'vcf', 'svg'];
 
 	public static function shannon(string $bytes): float {
 		$n = strlen($bytes);

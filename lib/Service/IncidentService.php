@@ -86,14 +86,26 @@ class IncidentService {
 		return ['id' => $i->getLastInsertId(), 'new' => true, 'status' => 'open'];
 	}
 
+	/** start of the current burst: the first suspicious event that is not more than 2 minutes older than the newest one (older ones belong to something else) */
 	private function firstTs(string $uid, string $client, int $since, bool $flagged): ?int {
-		$f = $this->db->getQueryBuilder();
-		$f->select($f->func()->min('ts'))->from('rw_journal')->where($f->expr()->eq('uid', $f->createNamedParameter($uid)))->andWhere($f->expr()->eq('client', $f->createNamedParameter($client)))
-			->andWhere($f->expr()->gte('ts', $f->createNamedParameter($since, IQueryBuilder::PARAM_INT)))->andWhere($f->expr()->isNull('op_id'));
-		if ($flagged) {
-			$f->andWhere($f->expr()->gt($f->createFunction('(flags & 7)'), $f->createNamedParameter(0, IQueryBuilder::PARAM_INT)));
+		$base = function (IQueryBuilder $q) use ($uid, $client, $since, $flagged): IQueryBuilder {
+			$q->where($q->expr()->eq('uid', $q->createNamedParameter($uid)))->andWhere($q->expr()->eq('client', $q->createNamedParameter($client)))
+				->andWhere($q->expr()->gte('ts', $q->createNamedParameter($since, IQueryBuilder::PARAM_INT)))->andWhere($q->expr()->isNull('op_id'));
+			if ($flagged) {
+				$q->andWhere($q->expr()->gt($q->createFunction('(flags & 7)'), $q->createNamedParameter(0, IQueryBuilder::PARAM_INT)));
+			}
+			return $q;
+		};
+		$q = $this->db->getQueryBuilder();
+		$q->select($q->func()->max('ts'))->from('rw_journal');
+		$last = $base($q)->executeQuery()->fetchOne();
+		if ($last === false || $last === null) {
+			return null;
 		}
-		$v = $f->executeQuery()->fetchOne();
+		$q = $this->db->getQueryBuilder();
+		$q->select($q->func()->min('ts'))->from('rw_journal');
+		$base($q)->andWhere($q->expr()->gte('ts', $q->createNamedParameter((int)$last - 120, IQueryBuilder::PARAM_INT)));
+		$v = $q->executeQuery()->fetchOne();
 		return $v === false || $v === null ? null : (int)$v;
 	}
 

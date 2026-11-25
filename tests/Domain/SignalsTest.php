@@ -55,6 +55,13 @@ final class SignalsTest extends TestCase {
 		$this->assertFalse(Entropy::looksEncrypted('txt', 'short'), 'too small to judge');
 	}
 
+	public function testOpenDocumentGraphicsAreNotEncrypted(): void {
+		// the files every new account gets (Templates/*.odg) are zip containers
+		$this->assertFalse(Entropy::looksEncrypted('odg', "PK\x03\x04" . random_bytes(4000)));
+		$this->assertFalse(Entropy::looksEncrypted('epub', "PK\x03\x04" . random_bytes(4000)));
+		$this->assertTrue(Entropy::looksEncrypted('odg', random_bytes(4000)), 'a damaged container is still suspicious');
+	}
+
 	public function testDetectorQuiet(): void {
 		$r = Detector::score(['writes' => 8, 'creates' => 4]);
 		$this->assertSame(0, $r['score']);

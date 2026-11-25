@@ -85,11 +85,11 @@ class ApiController extends Controller {
 	}
 
 	#[NoAdminRequired]
-	public function histogram(string $folder = '/', int $days = 7): JSONResponse {
+	public function histogram(string $folder = '/', int $hours = 24): JSONResponse {
 		$now = $this->time->getTime();
-		$days = max(1, min(90, $days));
-		$bucket = $days <= 2 ? 600 : ($days <= 7 ? 3600 : 6 * 3600);
-		$from = intdiv($now - $days * 86400, $bucket) * $bucket;
+		$hours = max(1, min(2160, $hours));
+		$bucket = $hours <= 6 ? 300 : ($hours <= 24 ? 900 : ($hours <= 168 ? 3600 : 21600));
+		$from = intdiv($now - $hours * 3600, $bucket) * $bucket;
 		return new JSONResponse(['from' => $from, 'to' => $now, 'bucket' => $bucket, 'buckets' => $this->journal->histogram($this->uid(), $from, $now, $bucket, self::folder($folder))]);
 	}
 
