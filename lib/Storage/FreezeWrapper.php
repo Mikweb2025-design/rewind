@@ -18,16 +18,22 @@ class FreezeWrapper extends Wrapper {
 	private FreezeService $freeze;
 	private string $uid;
 	private string $client;
+	/** true for the home storage (only its files/ tree is guarded), false for an external mount (everything is guarded) */
+	private bool $home;
 
 	public function __construct($parameters) {
 		parent::__construct($parameters);
 		$this->freeze = $parameters['freeze'];
 		$this->uid = $parameters['uid'];
 		$this->client = $parameters['client'];
+		$this->home = (bool)($parameters['home'] ?? true);
 	}
 
 	private function guard(string $path): void {
-		if (self::$bypass || !str_starts_with(ltrim($path, '/'), 'files/') && trim($path, '/') !== 'files') {
+		if (self::$bypass) {
+			return;
+		}
+		if ($this->home && !str_starts_with(ltrim($path, '/'), 'files/') && trim($path, '/') !== 'files') {
 			return;
 		}
 		if ($this->freeze->isFrozen($this->uid, $this->client)) {

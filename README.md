@@ -22,6 +22,13 @@ If a file never had a version or was removed from the trash, that file cannot co
 
 The journal starts when you install the app. Older changes are only covered as far as versions and trash reach.
 
+## Storage and caches
+
+* **Local disk, NFS, SMB:** works.
+* **S3 / object storage as primary storage:** works (tested with an S3 service: rewind, undo, attack detection, freeze). Versions and the trash bin live in the bucket like any other file, so a rewind of thousands of files copies objects and can take minutes; the rewind keeps running even if the browser or a proxy gives up.
+* **External storage** (Files external: S3, SMB, SFTP, ...) and shared or group folders: the shield freezes writes there too. Rewind restores from versions and trash exactly as for normal files; the preview lists every item that cannot be restored.
+* **Redis / APCu / no cache:** Rewind keeps all its counters in the database, so it works the same with and without Redis (tested with Redis as cache and file locking).
+
 ## Install
 
 ```bash

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+* The shield also freezes external storage, shared and group folders (every mount below the account), not only the home storage.
+* A rewind keeps running when the browser or a proxy disconnects (large rewinds on S3).
+* Tested with S3 primary storage and Redis (cache and locking).
+
 ## 0.1.0
 
 First release.

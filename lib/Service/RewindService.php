@@ -60,6 +60,9 @@ class RewindService {
 
 	/** run the plan; returns the operation id */
 	public function run(string $uid, string $folder, int $ts, int $now, string $by, ?int $incidentId = null): array {
+		// large rewinds (S3 copies objects) can take minutes: finish even when the browser or a proxy gives up
+		ignore_user_abort(true);
+		@set_time_limit(0);
 		$prev = $this->preview($uid, $folder, $ts, $now);
 		$op = $this->createOperation($uid, $folder, $ts, $now, $prev['counts']);
 		Journal::$op = $op;

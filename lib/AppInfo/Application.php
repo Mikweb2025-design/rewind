@@ -57,15 +57,16 @@ class Application extends App implements IBootstrap {
 	public function addStorageWrapper(): void {
 		$server = \OC::$server;
 		\OC\Files\Filesystem::addStorageWrapper('rewind_freeze', function (string $mountPoint, IStorage $storage, IMountPoint $mount) use ($server) {
-			// only the home storage of an account (its files/ tree), never external mounts
-			if (preg_match('#^/([^/]+)/$#', $mountPoint, $m) !== 1) {
+			// the home storage of an account (its files/ tree) and every mount below /<account>/files/ (external storage, S3, SMB, ...)
+			$home = preg_match('#^/([^/]+)/$#', $mountPoint, $m) === 1;
+			if (!$home && preg_match('#^/([^/]+)/files/#', $mountPoint, $m) !== 1) {
 				return $storage;
 			}
 			$freeze = $server->get(FreezeService::class);
 			if ($freeze->active($m[1]) === []) {
 				return $storage;
 			}
-			return new FreezeWrapper(['storage' => $storage, 'freeze' => $freeze, 'uid' => $m[1], 'client' => FileEventListener::client($server->get(IRequest::class))]);
+			return new FreezeWrapper(['storage' => $storage, 'freeze' => $freeze, 'uid' => $m[1], 'client' => FileEventListener::client($server->get(IRequest::class)), 'home' => $home]);
 		}, 1);
 	}
 }
