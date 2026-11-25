@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rewind screenshot harness</title>
+<link rel="stylesheet" href="../../css/rewind.css">
+<style>
+  /* a stand-in for the Nextcloud page around the app (dark theme variables + background) */
+  :root { --color-main-background: #171f2f; --color-main-text: #e8ecf5; --color-text-maxcontrast: #9aa6bd; --color-border: #2a3550; --color-border-dark: #3a4766; --color-primary-element: #3b82f6; }
+  html, body { margin: 0; height: 100%; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--color-main-text);
+    background: radial-gradient(900px 600px at 85% 90%, #1d6fd0 0, transparent 60%), radial-gradient(700px 500px at 0 80%, #2a8be8 0, transparent 55%), linear-gradient(180deg, #0a1030, #0c1a4a); }
+  .nc-top { position: fixed; top: 0; left: 0; right: 0; height: 50px; display: flex; align-items: center; gap: 18px; padding: 0 16px; z-index: 3; color: #fff; }
+  .nc-logo { display: inline-flex; } .nc-logo i { width: 18px; height: 18px; border: 4px solid #fff; border-radius: 50%; margin-right: -4px; } .nc-logo i:nth-child(2) { width: 24px; height: 24px; }
+  #content { position: fixed; top: 50px; left: 0; right: 0; bottom: 0; }
+  .state-done .rw-overlay canvas { display: none; } .state-done .rw-success-ring path, .state-done .rw-success-ring circle { animation-delay: 0s !important; }
+</style>
+</head>
+<body>
+<div class="nc-top"><span class="nc-logo"><i></i><i></i><i></i></span><b style="font-weight:600">Rewind</b></div>
+<div id="content"><div class="rw-scroll"><div id="rw-root" class="rw-root"></div></div></div>
+<script>
+/* demo data + a fake backend: the real app code runs unchanged on top of it */
+(function () {
+  var params = new URLSearchParams(location.search), state = params.get('state') || 'ok';
+  document.documentElement.className = 'state-' + state;
+  var now = Math.floor(Date.now() / 1000), H = 3600;
+  var attack = state === 'attack' || state === 'rewinding' || state === 'done';
+  var started = now - 95;
+  var incident = { id: 7, uid: 'anna', client: 'abc', ua: 'Mozilla/5.0 (Windows NT 10.0) mirall/3.13.1', ip: '192.168.1.42', started: started, lastSeen: now - 60, score: 92, files: 214,
+    reasons: ['volume', 'ransom_names', 'ransom_note', 'encrypted_content'], sample: [], status: 'frozen', opId: null };
+  function rnd(i) { var x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); }
+  function buckets(hours) {
+    var bucket = hours <= 6 ? 300 : (hours <= 24 ? 900 : (hours <= 168 ? 3600 : 21600)), from = Math.floor((now - hours * H) / bucket) * bucket, out = [];
+    for (var t = from, i = 0; t <= now; t += bucket, i++) {
+      var hr = new Date(t * 1000).getHours(), work = hr >= 8 && hr <= 18, n = Math.round((work ? 14 : 2) * rnd(i) * (rnd(i + 7) > .3 ? 1 : 0.2)), flagged = 0;
+      if (attack && t >= started - bucket) { n += Math.round(55 + 30 * rnd(i + 3)); flagged = n - 8; }
+      out.push([t, n, flagged]);
+    }
+    return { from: from, to: now, bucket: bucket, buckets: out };
+  }
+  var status = { uid: 'anna', now: now, enabled: true, mode: 'client', available: true, journalFrom: now - 18 * 86400, frozen: attack, frozenAll: false,
+    incidents: attack ? [incident] : [], recentIncidents: [],
+    operations: state === 'done' ? [{ id: 3, folder: '/', target: started - 1, created: now - 20, counts: { restore: 6, trash: 7 }, status: 'done' }] : [
+      { id: 2, folder: '/Documents/Taxes', target: now - 9 * 86400, created: now - 8 * 86400, counts: { rollback: 4, rename: 2 }, status: 'done' },
+      { id: 1, folder: '/Photos/2026', target: now - 20 * 86400, created: now - 19 * 86400, counts: { restore: 12 }, status: 'undone' }], retentionDays: 90 };
+  var activity = { items: [
+    { action: 'create', ts: now - 70, ua: incident.ua, ip: '', count: 198, flagged: attack ? 190 : 0, sample: ['/Family/invoice-6.pdf.locked'], rewind: false },
+    { action: 'delete', ts: now - 72, ua: incident.ua, ip: '', count: 196, flagged: 0, sample: ['/Family/photo-5.jpg'], rewind: false },
+    { action: 'write', ts: now - 2 * H, ua: 'Mozilla/5.0 Firefox/130', ip: '', count: 8, flagged: 0, sample: ['/Documents/budget-2027.ods'], rewind: false },
+    { action: 'create', ts: now - 5 * H, ua: 'Nextcloud-android/3.30', ip: '', count: 24, flagged: 0, sample: ['/Photos/Camera/IMG_2041.jpg'], rewind: false },
+    { action: 'rename', ts: now - 9 * H, ua: 'mirall/3.13.1', ip: '', count: 12, flagged: 0, sample: ['/Projects/Offer-final.odt'], rewind: false }].slice(attack ? 0 : 2) };
+  var preview = { steps: [
+    { type: 'trash', path: '/Family/invoice-6.pdf.locked', file_id: 1, status: 'ok' }, { type: 'restore', path: '/Family/photo-5.jpg', file_id: 2, deleted: started, status: 'ok' },
+    { type: 'trash', path: '/Family/photo-5.jpg.locked', file_id: 3, status: 'ok' }, { type: 'restore', path: '/Family/letter-4.txt', file_id: 4, deleted: started, status: 'ok' },
+    { type: 'trash', path: '/Family/letter-4.txt.locked', file_id: 5, status: 'ok' }, { type: 'restore', path: '/Family/sheet-3.docx', file_id: 6, deleted: started, status: 'ok' },
+    { type: 'rollback', path: '/Documents/budget-2027.ods', file_id: 7, status: 'ok' }, { type: 'rename', from: '/Projects/Offer-final.odt', to: '/Projects/Offer.odt', status: 'ok' }],
+    counts: { rollback: 31, restore: 96, trash: 108, rename: 5 }, problems: 0, total: 240, from: started - 1 };
+  var realFetch = window.fetch;
+  window.fetch = function (u, init) {
+    u = String(u); var m = (init && init.method) || 'GET', body, delay = 0;
+    function reply(b) { return new Promise(function (res) { setTimeout(function () { res({ ok: true, status: 200, json: function () { return Promise.resolve(b); } }); }, delay); }); }
+    if (u.indexOf('/api/status') >= 0) { body = status; }
+    else if (u.indexOf('/api/histogram') >= 0) { body = buckets(+(/hours=(\d+)/.exec(u) || [0, 24])[1]); }
+    else if (u.indexOf('/api/activity') >= 0) { body = activity; }
+    else if (u.indexOf('/api/rewind/preview') >= 0) { body = preview; }
+    else if (u.indexOf('/api/rewind') >= 0 && m === 'POST') { delay = 600; body = { op: 3, status: 'done', done: 240, failed: [], counts: preview.counts }; }
+    else if (u.indexOf('/api/folders') >= 0) { body = { path: '/', folders: [{ name: 'Documents', path: '/Documents' }, { name: 'Family', path: '/Family' }, { name: 'Photos', path: '/Photos' }, { name: 'Projects', path: '/Projects' }] }; }
+    else { return realFetch.apply(this, arguments); }
+    return reply(body);
+  };
+  /* drive the real interface into the state to show */
+  window.addEventListener('load', function () {
+    function click(sel, wait) { setTimeout(function () { var b = document.querySelector(sel); if (b) { b.click(); } }, wait); }
+    if (state === 'attack' || state === 'rewinding' || state === 'done') { click('.rw-incident .rw-btn-light', 400); }
+    if (state === 'rewinding' || state === 'done') { click('.rw-preview .rw-btn-go', 1500); }
+    if (state === 'preview') { click('.rw-go-row .rw-btn-go', 500); }
+    if (state === 'attack' || state === 'preview') { setTimeout(function () { document.querySelector('.rw-scroll').scrollTop = 0; }, 2500); }
+    if (state === 'rewinding') { setTimeout(function () { var o = document.querySelector('.rw-overlay'); if (o) { o.scrollIntoView({ block: 'center' }); } }, 2200); }
+    if (state === 'done') { setTimeout(function () { var o = document.querySelector('.rw-overlay'); if (o) { o.scrollIntoView({ block: 'center' }); } }, 5200); }
+  });
+}());
+</script>
+<script src="../../js/rw-i18n.js"></script>
+<script src="../../js/rw-app.js"></script>
+</body>
+</html>

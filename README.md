@@ -5,6 +5,8 @@
 Pick a folder and a moment in the past, see exactly what will change, and bring the folder back. If ransomware starts encrypting
 your files, Rewind notices within seconds, freezes the attacking device and lets you go back to the moment before the attack with one click.
 
+<p align="center"><img src="docs/screenshots/2-attack.png" alt="Rewind after a ransomware attack: frozen device, incident, preview of what will be restored" width="760"></p>
+
 | | |
 | --- | --- |
 | **Rewind** | A timeline with an animated dial. Drag to a moment, preview (files coming back, older versions, newer files to the trash, renames undone), press *Rewind*. Every rewind can be undone. |
@@ -13,6 +15,14 @@ your files, Rewind notices within seconds, freezes the attacking device and lets
 | **Admin** | Switch on/off, mode (warn only / freeze device / freeze account), thresholds, retention, alert email, accounts not watched, list of frozen accounts and incidents. |
 
 Everything runs inside your Nextcloud: no external service, no telemetry. English, German, Italian.
+
+### Screenshots
+
+| Protected, ready to rewind | Rewinding | Back in time | On a phone |
+| --- | --- | --- | --- |
+| <img src="docs/screenshots/1-protected.png" width="200"> | <img src="docs/screenshots/3-rewinding.png" width="200"> | <img src="docs/screenshots/4-done.png" width="200"> | <img src="docs/screenshots/5-phone.png" width="100"> |
+
+The screenshots are the real interface (this repository's css and js) rendered in headless Chrome with demo data: `bin/make-screenshots.sh`.
 
 ## What Rewind can and cannot do
 

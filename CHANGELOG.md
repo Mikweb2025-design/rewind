@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+* Screenshots in the repository and in the App Store listing (`bin/make-screenshots.sh` renders them from the real interface).
+* Dial: the time no longer sits under the hands; folder button readable in every theme.
+
 ## 0.1.1
 
 * The shield also freezes external storage, shared and group folders (every mount below the account), not only the home storage.

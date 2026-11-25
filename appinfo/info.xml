@@ -11,7 +11,7 @@
 
 Rewind restores what Nextcloud keeps (file versions and the trash bin) and is **not** a replacement for backups.
 Requires the core apps "Versions" and "Deleted files".]]></description>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <licence>agpl</licence>
     <author>Rewind contributors</author>
     <namespace>Rewind</namespace>
@@ -20,6 +20,10 @@ Requires the core apps "Versions" and "Deleted files".]]></description>
     </types>
     <category>security</category>
     <category>files</category>
+    <screenshot small-thumbnail="https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/1-protected.png">https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/1-protected.png</screenshot>
+    <screenshot small-thumbnail="https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/2-attack.png">https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/2-attack.png</screenshot>
+    <screenshot small-thumbnail="https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/3-rewinding.png">https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/3-rewinding.png</screenshot>
+    <screenshot small-thumbnail="https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/4-done.png">https://raw.githubusercontent.com/Mikweb2025-design/rewind/main/docs/screenshots/4-done.png</screenshot>
     <website>https://github.com/Mikweb2025-design/rewind</website>
     <bugs>https://github.com/Mikweb2025-design/rewind/issues</bugs>
     <repository type="git">https://github.com/Mikweb2025-design/rewind.git</repository>

@@ -54,7 +54,7 @@
   box-shadow: 0 18px 50px -22px rgba(8, 12, 40, .8), inset 0 0 0 1px rgba(255, 255, 255, .06); }
 .rw-machine h3 { font-size: 1.3rem; } .rw-machine .rw-sub { color: var(--rw-ink2); margin: 4px 0 18px; }
 .rw-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
-.rw-root .rw-folder { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 12px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .12); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rw-root .rw-folder { color: var(--rw-ink); display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 12px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .12); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rw-spacer { flex: 1; }
 .rw-grid { display: grid; grid-template-columns: 250px 1fr; gap: 26px; align-items: center; }
 .rw-dial { position: relative; width: 250px; height: 250px; margin: 0 auto; }
@@ -63,7 +63,7 @@
 .rw-hand { transform-origin: 125px 125px; transition: transform .25s cubic-bezier(.2, .8, .2, 1); }
 .rw-dial.rw-spinning .rw-hand-m { transition: none; animation: rw-spin 0.9s linear infinite reverse; }
 .rw-dial.rw-spinning .rw-hand-h { transition: none; animation: rw-spin 10.8s linear infinite reverse; }
-.rw-dial-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; padding-top: 70px; }
+.rw-dial-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; padding-top: 118px; }
 .rw-dial-center b { font-size: 1.25rem; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
 .rw-dial-center small { color: var(--rw-ink2); font-size: .8rem; }
 .rw-readout { margin-bottom: 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
