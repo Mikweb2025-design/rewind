@@ -174,3 +174,16 @@
 .rw-root .rw-hint { background: rgba(0, 0, 0, .28); border-radius: 10px; padding: 8px 12px; color: var(--rw-ink); }
 .rw-root .rw-machine, .rw-root .rw-hero { box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 255, 255, .06); }
 @media (max-width: 640px) { .rw-root .rw-section, .rw-root .rw-foot { padding: 14px; border-radius: 18px; } }
+
+/* Nextcloud styles h2/h3/p/a globally: pin the colours inside the dark panels (reproduced on a real instance, 0.1.4) */
+.rw-scroll { flex: 1 1 auto; width: 100%; min-width: 0; }
+.rw-root .rw-hero h2, .rw-root .rw-hero h3, .rw-root .rw-machine h2, .rw-root .rw-machine h3, .rw-root .rw-overlay h3,
+.rw-root .rw-incident h2, .rw-root .rw-incident h3, .rw-root .rw-incident b { color: var(--rw-ink) !important; }
+.rw-root .rw-hero p, .rw-root .rw-machine p, .rw-root .rw-sub, .rw-root .rw-hero-text p { color: var(--rw-ink2) !important; }
+.rw-root .rw-hero-text h2 { text-shadow: 0 2px 18px rgba(0, 0, 0, .55); }
+.rw-root .rw-machine .rw-readout, .rw-root .rw-machine .rw-readout b { color: var(--rw-ink) !important; }
+.rw-root .rw-machine .rw-hint { color: var(--rw-ink) !important; }
+.rw-root .rw-tile b { -webkit-text-fill-color: transparent; }
+.rw-root .rw-section h3, .rw-root .rw-hcard b, .rw-root .rw-feed .rw-main b { color: var(--color-main-text) !important; }
+.rw-root .rw-dial-center, .rw-root .rw-dial-center b { color: var(--rw-ink) !important; }
+.rw-root .rw-incident, .rw-root .rw-incident strong, .rw-root .rw-incident .rw-i-text span { color: #fff !important; }

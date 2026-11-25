@@ -22,6 +22,11 @@ class Config {
 	public function __construct(private IAppConfig $cfg) {
 	}
 
+	/** 'enabled' is reserved: Nextcloud stores the app's own enable state under that key. */
+	private function key(string $k): string {
+		return $k === 'enabled' ? 'protection' : $k;
+	}
+
 	public function all(): array {
 		$out = [];
 		foreach (self::DEFAULTS as $k => $d) {
@@ -33,15 +38,15 @@ class Config {
 	public function get(string $k): mixed {
 		$d = self::DEFAULTS[$k];
 		if (is_bool($d)) {
-			return $this->cfg->getValueBool(self::APP, $k, $d);
+			return $this->cfg->getValueBool(self::APP, $this->key($k), $d);
 		}
 		if (is_int($d)) {
-			return $this->cfg->getValueInt(self::APP, $k, $d);
+			return $this->cfg->getValueInt(self::APP, $this->key($k), $d);
 		}
 		if (is_array($d)) {
-			return $this->cfg->getValueArray(self::APP, $k, $d);
+			return $this->cfg->getValueArray(self::APP, $this->key($k), $d);
 		}
-		return $this->cfg->getValueString(self::APP, $k, $d);
+		return $this->cfg->getValueString(self::APP, $this->key($k), $d);
 	}
 
 	/** @return list<string> invalid fields */
@@ -53,7 +58,7 @@ class Config {
 			}
 			switch ($k) {
 				case 'enabled':
-					$this->cfg->setValueBool(self::APP, $k, filter_var($v, FILTER_VALIDATE_BOOLEAN));
+					$this->cfg->setValueBool(self::APP, $this->key($k), filter_var($v, FILTER_VALIDATE_BOOLEAN));
 					break;
 				case 'mode':
 					in_array($v, self::MODES, true) ? $this->cfg->setValueString(self::APP, $k, $v) : $bad[] = $k;

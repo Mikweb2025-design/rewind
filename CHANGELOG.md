@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+* **Fix:** the admin switch stored its value under `enabled`, the key Nextcloud itself uses for the app state; saving it could make the whole instance answer HTTP 500. It is now stored as `protection`.
+* Headings in the dark panels were painted dark by Nextcloud's global `h2/h3` colours (title and "Time machine" unreadable on live instances). Colours are pinned; the page now uses the full content width.
+
 ## 0.1.3
 
 * Readability on Nextcloud wallpapers: activity, recent rewinds and footer now sit on solid cards; preview/hint text uses the light ink of the dark panels. Checked on light and dark backgrounds.
