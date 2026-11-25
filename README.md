@@ -72,6 +72,8 @@ python3 bin/simulate-attack.py            # AES-encrypting ransomware over WebDA
 python3 bin/simulate-normal.py            # heavy normal use: must not raise an incident
 ```
 
+See [docs/TESTING.md](docs/TESTING.md) for what was tested, how, and what was not.
+
 ## License
 
 AGPL-3.0-or-later.
