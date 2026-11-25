@@ -29,7 +29,7 @@ REPO_URL="https://github.com/Mikweb2025-design/rewind"   # the only allowed publ
 PATTERN="$(printf 'dan%s|mich%s|mik%s|strato%s' iele elin web server)"
 LEAK=0
 while IFS= read -r -d '' f; do
-	if LC_ALL=C sed -e "s#$REPO_URL##g" -e "s#https://daniele-michelin.com[^) ]*##g" -e "s#\[daniele-michelin.com\]##g" "$f" | grep -qiaE "$PATTERN"; then echo "forbidden reference in: $f" >&2; LEAK=1; fi
+	if LC_ALL=C sed -e "s#$REPO_URL##g" -e "s#https://raw.githubusercontent.com/Mikweb2025-design/rewind##g" -e "s#https://daniele-michelin.com[^) ]*##g" -e "s#\[daniele-michelin.com\]##g" "$f" | grep -qiaE "$PATTERN"; then echo "forbidden reference in: $f" >&2; LEAK=1; fi
 	case "$f" in *.zip|*Export.xml|*export_cda.xml) echo "forbidden file: $f" >&2; LEAK=1;; esac
 done < <(find "$DEST" -type f -print0)
 [ "$LEAK" = 0 ] || exit 1
