@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5
+
+* App Store listing: screenshot links now use the `github.com/.../raw/` form so the App Store image proxy can load them.
+
 ## 0.1.4
 
 * **Fix:** the admin switch stored its value under `enabled`, the key Nextcloud itself uses for the app state; saving it could make the whole instance answer HTTP 500. It is now stored as `protection`.
